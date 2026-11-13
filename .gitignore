@@ -1,0 +1,14 @@
+*.o
+*.out
+*.core
+core
+core.*
+whoS
+whoamiS
+passwdS
+hostsS
+psS
+ps_aefS
+__pycache__/
+.env
+*.log
