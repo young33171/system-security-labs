@@ -14,7 +14,7 @@
     └── pytorch-tensor-basics.ipynb
 ```
 
-실행 코드와 출력이 보존된 노트북은 [`notebooks/pytorch-tensor-basics.ipynb`](notebooks/pytorch-tensor-basics.ipynb)입니다. 공개 사본에서는 개인 이름과 학번을 제거했습니다. 제출용 PDF와 로컬 화면 캡처는 개인 식별 정보가 포함되어 있어 이 공개 저장소에 복사하지 않았습니다.
+실행 코드와 출력이 보존된 학습용 노트북은 [`notebooks/pytorch-tensor-basics.ipynb`](notebooks/pytorch-tensor-basics.ipynb)입니다. 이 사본에서는 개인 이름과 학번을 제거했습니다. 사용자의 요청으로 최종 제출한 원본 PDF와 노트북은 [제출 파일 안내](../submissions/README.md)에 따라 별도 폴더에 보관합니다. 원본에는 이름·학번과 실습 화면이 포함되어 있습니다.
 
 ## Part 1. 실습 환경 구축
 
