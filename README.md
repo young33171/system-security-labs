@@ -230,8 +230,4 @@ gcc -m32 -z execstack -o whoS who.c
 
 ## AI and Data Analysis Coursework
 
-A separate study area documents the Python 3.11/uv environment and PyTorch Tensor exercises for Part 1–5.
 
-- [AI and data analysis index](04-ai-data-analysis/README.md)
-- [PyTorch Tensor lab guide and sanitized notebook](04-ai-data-analysis/01-pytorch-tensor-basics/README.md)
-- [Final submitted files](04-ai-data-analysis/submissions/README.md) — exact report and notebook files are included at the user's request.
