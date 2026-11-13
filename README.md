@@ -61,3 +61,12 @@ gcc -m32 -z execstack -o whoS who.c
 ## 증빙/윤리
 
 실습 출력 스크린샷은 추가 업로드 대상입니다. /etc/passwd 등 계정 또는 환경 정보가 포함될 수 있는 원본 결과는 공개 전에 마스킹합니다. 이 저장소는 본인이 관리하는 실습 VM에서의 교육·분석만을 목적으로 합니다.
+
+
+## Other coursework
+
+This repository also keeps non-security course labs in a separate directory so they do not mix with the system-security exercises.
+
+- [AI and data analysis](04-ai-data-analysis/README.md) — [PyTorch Tensor basics](04-ai-data-analysis/01-pytorch-tensor-basics/README.md), including the Python/uv environment notes, Part 2–5 explanations, requirements, and an executed notebook.
+
+The public notebook copy excludes the submitter's name and student number. The submitted report PDF and personal screenshots are kept out of this public repository.
