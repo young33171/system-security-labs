@@ -93,3 +93,36 @@ ndisasm -b32 ps_aef > dump_ps_aef
 - 오류가 발생하는 입력 조건과 정상 실행 조건 비교
 
 > 개인 Kali Linux 가상머신에서 수행한 교육용 실습 기록이다.
+
+## 9. 실습 소스 코드
+
+아래 코드는 저장소의 개별 소스 파일과 동일한 내용이다. 어셈블리와 C 래퍼를 함께 읽으면서 레지스터 설정부터 실행 메모리 호출까지의 흐름을 확인할 수 있다.
+
+### ps_aef.s
+
+```asm
+BITS 32
+section .text
+global _start
+_start:
+    jmp short data
+run:
+    pop esi
+    xor eax,eax
+    mov byte [esi+7],al
+    mov byte [esi+12],al
+    lea ebx,[esi]
+    lea edi,[esi+8]
+    push eax
+    push edi
+    push ebx
+    mov ecx,esp
+    xor edx,edx
+    mov al,11
+    int 0x80
+data:
+    call run
+    db '/bin/ps',0x41
+    db '-aef',0x41
+```
+

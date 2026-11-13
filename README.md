@@ -210,7 +210,11 @@ gcc -m32 -z execstack -o whoS who.c
 
 [Detailed troubleshooting](docs/troubleshooting.md)
 
-## 8. Key Takeaways
+## 8. 실습 결과 및 학습 성과
+
+실습별 실행 내용, 관찰한 출력과 학습한 기술을 [Lab Results & Learning Outcomes](docs/lab-results.md)에 정리했습니다. 각 실습 폴더의 README에는 NASM/C 소스 전문과 구현 분석을 함께 수록했습니다.
+
+## 9. Key Takeaways
 
 - Linux 사용자 공간과 커널 공간이 시스템 콜로 연결되는 구조를 이해했습니다.
 - NASM 명령어를 기계어로 변환하고 각 바이트의 의미를 추적했습니다.
