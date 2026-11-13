@@ -222,3 +222,12 @@ gcc -m32 -z execstack -o whoS who.c
 ---
 
 **Scope:** 개인 Kali Linux 가상머신 기반 시스템보안 수업 실습. 교육 및 학습 목적으로 정리했습니다.
+
+
+## AI and Data Analysis Coursework
+
+A separate study area documents the Python 3.11/uv environment and PyTorch Tensor exercises for Part 1–5.
+
+- [AI and data analysis index](04-ai-data-analysis/README.md)
+- [PyTorch Tensor lab guide and sanitized notebook](04-ai-data-analysis/01-pytorch-tensor-basics/README.md)
+- [Final submitted files](04-ai-data-analysis/submissions/README.md) — exact report and notebook files are included at the user's request.
