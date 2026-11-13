@@ -1,18 +1,21 @@
-# 직접 겪은 문제와 해결
+# Troubleshooting
 
-| 증상 | 원인 | 해결 |
+실습 과정에서 발생한 오류와 해결 방법을 정리했습니다.
+
+| Error | Cause | Fix |
 |---|---|---|
-| `who.c: No such file or directory` | /root 와 공유 폴더의 경로 혼동 | pwd/ls 확인 후 파일이 있는 폴더로 이동 |
-| `readlf: command not found` | readelf 오타 | `readelf -W -l whoS` (끝은 소문자 L) |
-| `dword data exceeds bounds` | 32비트 push 즉시값 초과 | NASM 데이터 문자열/jmp-call-pop 형태 사용 |
-| `unknown escape sequence: '\X'` | C 문자열에 잘못된 대문자 X | 소문자 `\xNN` 사용 |
-| whoami 111 bytes / Segmentation fault | 잘못된 C 문자열 이스케이프 | 올바른 변환 값으로 고친 뒤 39 bytes와 root 출력 확인 |
-| `-z execstack ignored` | 환경에서 해당 링커 옵션 무시 | 경고와 별개로 실행 메모리 및 실제 동작 검증 |
-| `Shellcode size: 30 bytes`만 출력 | 프로그램이 길이만 출력함 | C 래퍼에서 실제 호출 여부 확인 |
-| Segmentation fault | 잘못된 바이트 또는 비실행 메모리 | 원본 바이트/메모리 권한 점검 |
-| /usr/bin/who 실행 오류 | 문자열의 슬래시 배치 오류 | `/usr` + `/bin` + `/who` 경로 확인 |
-| 터미널 종료 | VM 터미널 세션 닫힘 | Ctrl+Alt+T, 작업 파일 저장 여부 재확인 |
-| 컴파일은 되지만 파일 실행 불가 | 바이너리 경로/권한/옵션 문제 | `ls -l`, `file`, `pwd` 점검 |
+| `No such file or directory` | 현재 작업 폴더와 소스 위치가 다름 | `pwd`, `ls`로 경로 확인 |
+| `readlf: command not found` | 명령어 오타 | `readelf` 사용 |
+| NASM immediate exceeds bounds | 32비트 범위를 넘는 상수 | 문자열 데이터 배치 방식 수정 |
+| `unknown escape sequence: '\X'` | C 바이트 문자열에서 대문자 X 사용 | 소문자 `\xNN`로 수정 |
+| `Segmentation fault` | 바이트 오류 또는 메모리 실행 권한 문제 | 쉘코드 바이트와 메모리 권한 점검 |
+| `-z execstack ignored` | 링커 옵션 적용 문제 | 실행 권한 설정과 결과를 별도 확인 |
+| 쉘코드 크기만 출력 | C 프로그램에서 함수 호출을 하지 않음 | 쉘코드 호출 코드 확인 |
+| 잘못된 실행 경로 | 어셈블리 문자열의 슬래시 배치 오류 | 경로 문자열을 바이트 단위로 점검 |
 
-## 검증 원칙
-컴파일 통과와 실제 실행 성공은 다릅니다. `whoami`는 root 출력, `who`는 접속 목록, `cat`은 지정 파일 내용, `ps`는 프로세스 표를 확인해야 성공입니다.
+## Lessons Learned
+
+- 컴파일 성공과 프로그램 실행 성공은 별개입니다.
+- `\xNN` 문자열의 한 글자 오류도 전혀 다른 바이트를 만듭니다.
+- `/root`와 공유 폴더를 혼용할 때 파일 위치를 먼저 확인해야 합니다.
+- 실행 경로, NUL 종료, 인자 배열, 메모리 권한을 함께 점검해야 합니다.

@@ -1,23 +1,46 @@
-# 32-bit x86 Linux Shellcode 실습
+# x86 Linux Shellcode Labs
 
-Linux i386 `execve` 호출 관례를 바탕으로 NASM 코드를 기계어로 만들고, `ndisasm` 및 교수님 제공 `convert.pl`을 거쳐 C 문자열로 변환하는 실습입니다.
+NASM으로 32-bit x86 어셈블리 코드를 작성하고, 생성된 기계어를 C 프로그램에서 실행하는 실습입니다.
 
-| 과제 | 경로 | 상태 |
-|---|---|---|
-| 01 | [who](01-who/) | 출력 확인 |
-| 02 | [whoami](02-whoami/) | 출력 확인 |
-| 03 | [cat passwd](03-cat-passwd/) | 출력 확인 |
-| 04 | [cat hosts](04-cat-hosts/) | 출력 확인 |
-| 05 | [ps](05-ps/) | 변환 확인, 실행 미확인 |
-| 06 | [ps -aef](06-ps-aef/) | 복원 예제, 실행 미확인 |
-| 07 | [link / chmod](07-link-chmod/) | 과제만 확인 |
+## 실습 목록
 
-## 핵심 원리
-- NASM `BITS 32` / `global _start`
-- i386: eax=11(0x0b) 지정 후 `int 0x80`으로 `execve` 호출
-- ebx=실행할 파일 경로, ecx=argv 배열, edx=envp 배열
-- 리틀 엔디언 상수와 문자열의 NUL 종료 처리
-- `jmp/call/pop`으로 데이터 주소 획득, C 배열의 `\xNN` 바이트 표현
-- `execve` 성공 시 호출 프로세스가 프로그램 이미지로 교체됨
+| No. | Program | Assembly | C |
+|---|---|---|---|
+| 01 | `/usr/bin/who` | [who.s](01-who/who.s) | [who.c](01-who/who.c) |
+| 02 | `/usr/bin/whoami` | [whoami.s](02-whoami/whoami.s) | [whoami.c](02-whoami/whoami.c) |
+| 03 | `/bin/cat /etc/passwd` | [passwd.s](03-cat-passwd/passwd.s) | [passwd.c](03-cat-passwd/passwd.c) |
+| 04 | `/bin/cat /etc/hosts` | [hosts.s](04-cat-hosts/hosts.s) | [hosts.c](04-cat-hosts/hosts.c) |
+| 05 | `/bin/ps` | [ps.s](05-ps/ps.s) | [ps.c](05-ps/ps.c) |
+| 06 | `/bin/ps -aef` | [ps_aef.s](06-ps-aef/ps_aef.s) | — |
+| 07 | `link`, `chmod` | [학습 주제](07-link-chmod/README.md) | — |
 
-`convert.pl`, `dump_*`, `out_*`는 실제 VM 파일을 별도로 가져와 검증 후 추가해야 합니다. 첨부된 소스는 수업 실습 중 채팅에 나온 내용을 기준으로 재구성한 버전입니다.
+## execve 시스템 콜
+
+Linux i386에서 `execve`는 다음 레지스터를 사용합니다.
+
+| Register | Value |
+|---|---|
+| EAX | 11 (`0x0b`) |
+| EBX | 실행 파일 경로 |
+| ECX | `argv` 배열 |
+| EDX | `envp` 배열 |
+
+`int 0x80`으로 시스템 콜을 실행합니다.
+
+## 실습 절차
+
+```bash
+nasm -f bin who.s -o who
+ndisasm -b32 who > dump_w
+perl /root/convert.pl dump_w out_w
+gcc -m32 -z execstack -o whoS who.c
+./whoS
+```
+
+## 구현 포인트
+
+- 명령어 경로와 인자를 메모리에 배치
+- NUL 종료 문자열 구성
+- `argv` 배열에 경로 및 인자 포인터 저장
+- C에서 `\xNN` 형식의 바이트 문자열 사용
+- 실행 메모리 권한과 프로그램 동작 확인

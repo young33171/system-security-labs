@@ -1,16 +1,45 @@
-# 실습 워크플로
+# Lab Workflow
 
-1. Geany에서 `NAME.s` 작성 및 Ctrl+S 저장
-2. `nasm -f bin NAME.s -o NAME` — NASM flat binary 생성
-3. `ndisasm -b32 NAME > dump_NAME` — 32-bit 디스어셈블
-4. `perl /root/convert.pl dump_NAME out_NAME` — 바이트열 변환
-5. `out_NAME`의 바이트를 실제 `NAME.c`의 `shellcode[]`와 비교
-6. `gcc -m32 -z execstack -o NAMES NAME.c` — 32-bit C 프로그램 컴파일
-7. `./NAMES` — 실제 프로그램의 동작 결과 검증
-8. 터미널 스크린샷 저장, 안전 검토 후 evidence 폴더에 업로드
+## 1. Assembly
 
-## 환경 경로 오류
-NASM 원본은 `/root`에 있는 경우가 있고 C 원본은 `/media/sf_SystemSecurity` 공유 폴더에 있는 경우가 있었습니다. 반드시 `pwd`, `ls`를 사용해 현재 폴더에서 파일이 존재하는지 확인합니다.
+Geany에서 NASM 소스를 작성하고 저장합니다.
 
-## C 실행 래퍼
-해당 Kali 환경에서 `-z execstack ignored` 경고가 발생했습니다. 수업에서는 실습용으로 `mmap(PROT_READ | PROT_WRITE | PROT_EXEC)`으로 메모리를 할당해 변환된 바이트를 복사한 뒤 함수 포인터로 호출했습니다. 이 기법은 실서비스에서 허용되지 않습니다.
+```bash
+geany who.s
+nasm -f bin who.s -o who
+```
+
+## 2. Disassembly
+
+```bash
+ndisasm -b32 who > dump_w
+cat dump_w
+```
+
+## 3. Convert to C Bytes
+
+```bash
+perl /root/convert.pl dump_w out_w
+cat out_w
+```
+
+## 4. Compile & Run
+
+변환한 바이트를 C 프로그램의 `shellcode[]` 배열에 넣고 컴파일합니다.
+
+```bash
+gcc -m32 -z execstack -o whoS who.c
+./whoS
+```
+
+## Environment
+
+- Kali Linux 32-bit
+- NASM / NDISASM
+- GCC with `-m32`
+- Geany
+- VirtualBox 공유 폴더 `/media/sf_SystemSecurity`
+
+### Implementation Note
+
+실습 환경에서는 `-z execstack ignored` 경고가 발생했습니다. 실행 가능한 메모리 할당과 C 배열의 실제 바이트를 확인해 동작을 점검했습니다.
